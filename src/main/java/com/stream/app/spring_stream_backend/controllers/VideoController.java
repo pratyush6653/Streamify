@@ -2,6 +2,7 @@ package com.stream.app.spring_stream_backend.controllers;
 
 import java.util.UUID;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -24,7 +25,7 @@ public class VideoController {
     }
     //Controller for handling video operations
     @PostMapping
-    public ResponseEntity<CustomMessage> create(
+    public ResponseEntity<?> create(
         @RequestParam("file")MultipartFile file,
         @RequestParam("title") String title,
         @RequestParam("description") String description
@@ -34,9 +35,23 @@ public class VideoController {
         video.setTitle(title);
         video.setDescription(description);
         video.setVideoId(UUID.randomUUID().toString());
-        videoService.save(video, file);
+        Video saveVideo=videoService.save(video, file);
 
-        return null;
+        if(saveVideo!=null)
+        {
+            return ResponseEntity
+            .status(HttpStatus.OK)
+            .body(video);
+        }
+        else
+        {
+            return ResponseEntity
+            .status(HttpStatus.NOT_FOUND)
+            .body(CustomMessage.builder().message("Video not uploaded")
+            .success(false)
+            .build()
+            );
+        }
     }
 
 }
