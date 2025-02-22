@@ -19,39 +19,57 @@ import com.stream.app.spring_stream_backend.services.VideoService;
 public class VideoController {
 
     private VideoService videoService;
-    public VideoController(VideoService videoService)
-    {
+
+    public VideoController(VideoService videoService) {
         this.videoService = videoService;
     }
-    //Controller for handling video operations
+
     @PostMapping
     public ResponseEntity<?> create(
-        @RequestParam("file")MultipartFile file,
+        @RequestParam("file") MultipartFile file,
         @RequestParam("title") String title,
         @RequestParam("description") String description
-    ){
-        
-        Video video=new Video();
+    ) {
+        // Validate input
+        if (file.isEmpty() || title.isEmpty() || description.isEmpty()) {
+            return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(CustomMessage.builder()
+                    .message("File, title, and description are required.")
+                    .success(false)
+                    .build());
+        }
+    
+        // Create a new Video object
+        Video video = new Video();
         video.setTitle(title);
         video.setDescription(description);
         video.setVideoId(UUID.randomUUID().toString());
-        Video saveVideo=videoService.save(video, file);
-
-        if(saveVideo!=null)
-        {
+    
+        try {
+            // Save the video
+            Video savedVideo = videoService.save(video, file);
+    
+            if (savedVideo != null) {
+                return ResponseEntity
+                    .status(HttpStatus.OK)
+                    .body(savedVideo); // Return the saved video
+            } else {
+                return ResponseEntity
+                    .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body(CustomMessage.builder()
+                        .message("Failed to save video.")
+                        .success(false)
+                        .build());
+            }
+        } catch (Exception e) {
+            // Handle exceptions
             return ResponseEntity
-            .status(HttpStatus.OK)
-            .body(video);
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .body(CustomMessage.builder()
+                    .message("Error uploading video: " + e.getMessage())
+                    .success(false)
+                    .build());
         }
-        else
-        {
-            return ResponseEntity
-            .status(HttpStatus.NOT_FOUND)
-            .body(CustomMessage.builder().message("Video not uploaded")
-            .success(false)
-            .build()
-            );
-        }
-    }
-
+    }    
 }
