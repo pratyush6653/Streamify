@@ -87,7 +87,7 @@ function VideoUpload() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-gradient-to-t from-[#30cfd0] to-[#330867]">
+    <div className="flex items-center justify-center bg-[#002244]">
       {/* Upload Card */}
       <div className="max-w-md w-full p-6 rounded-lg shadow-xl border border-gray-200 bg-white/10 backdrop-blur-sm">
         {/* Gradient Text for Heading */}
@@ -156,7 +156,7 @@ function VideoUpload() {
                 <span className="font-semibold">Click to upload</span> or drag and drop
               </p>
               <p className="text-xs text-white/60">
-                MP4, AVI, or MOV (max. 100MB)
+                MP4, AVI, or MOV (max. 1000MB)
               </p>
             </div>
             <input
@@ -213,8 +213,8 @@ function VideoUpload() {
           <button
             onClick={handleUpload}
             disabled={uploading}
-            className="w-full mt-6 px-4 py-2 bg-gradient-to-t from-[#30cfd0] to-[#330867] text-white font-semibold rounded-lg 
-            hover:bg-gradient-to-t hover:from-[#330867] hover:to-[#30cfd0] 
+            className="w-full mt-6 px-4 py-2 bg-[#002244] text-white font-semibold rounded-lg 
+            hover:bg-[#003366] 
             disabled:opacity-50 disabled:cursor-not-allowed"
           >
             Upload
