@@ -6,15 +6,22 @@ import { motion } from 'framer-motion'; // Import motion from framer-motion
 import { useEffect, useState } from 'react'; // Import useEffect and useState for typing effect
 
 function App() {
-  const [text, setText] = useState('');
-  const fullText = "Your go-to platform for streaming and sharing videos."; // Description text
+  const [text1, setText1] = useState('');
+  const [text2, setText2] = useState('');
+  const [text3, setText3] = useState('');
+
+  const fullText1 = "Your go-to platform for streaming and sharing videos."; // First line
+  const fullText2 = "Discover, stream, and share your favorite videos."; // Second line
+  const fullText3 = "Join a community of creators and viewers."; // Third line
+
   const typingSpeed = 100; // Speed of typing in milliseconds
 
+  // Typing effect for the first line
   useEffect(() => {
     let currentIndex = 0;
     const typingInterval = setInterval(() => {
-      if (currentIndex <= fullText.length) {
-        setText(fullText.slice(0, currentIndex));
+      if (currentIndex <= fullText1.length) {
+        setText1(fullText1.slice(0, currentIndex));
         currentIndex++;
       } else {
         clearInterval(typingInterval);
@@ -22,7 +29,41 @@ function App() {
     }, typingSpeed);
 
     return () => clearInterval(typingInterval);
-  }, [fullText]);
+  }, [fullText1]);
+
+  // Typing effect for the second line (starts after the first line finishes)
+  useEffect(() => {
+    if (text1 === fullText1) {
+      let currentIndex = 0;
+      const typingInterval = setInterval(() => {
+        if (currentIndex <= fullText2.length) {
+          setText2(fullText2.slice(0, currentIndex));
+          currentIndex++;
+        } else {
+          clearInterval(typingInterval);
+        }
+      }, typingSpeed);
+
+      return () => clearInterval(typingInterval);
+    }
+  }, [text1, fullText2]);
+
+  // Typing effect for the third line (starts after the second line finishes)
+  useEffect(() => {
+    if (text2 === fullText2) {
+      let currentIndex = 0;
+      const typingInterval = setInterval(() => {
+        if (currentIndex <= fullText3.length) {
+          setText3(fullText3.slice(0, currentIndex));
+          currentIndex++;
+        } else {
+          clearInterval(typingInterval);
+        }
+      }, typingSpeed);
+
+      return () => clearInterval(typingInterval);
+    }
+  }, [text2, fullText3]);
 
   return (
     <Router>
@@ -52,9 +93,25 @@ function App() {
               {/* Description with blinking cursor */}
               <div className="flex justify-center mt-4">
                 <div className="text-xl text-white font-mono relative">
-                  {text}
-                  <span className="typing-cursor" /> {/* Blinking cursor */}
+                  {text1}
+                  {text1 === fullText1 && <span className="typing-cursor" />} {/* Blinking cursor */}
                 </div>
+              </div>
+
+              {/* Additional Lines with Typing Animation */}
+              <div className="text-center text-white mt-6 space-y-4">
+                {text1 === fullText1 && (
+                  <div className="text-xl font-mono relative">
+                    {text2}
+                    {text2 === fullText2 && <span className="typing-cursor" />} {/* Blinking cursor */}
+                  </div>
+                )}
+                {text2 === fullText2 && (
+                  <div className="text-xl font-mono relative">
+                    {text3}
+                    {text3 === fullText3 && <span className="typing-cursor" />} {/* Blinking cursor */}
+                  </div>
+                )}
               </div>
               
               {/* Additional Content */}
