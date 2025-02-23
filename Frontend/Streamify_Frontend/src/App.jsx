@@ -3,8 +3,27 @@ import Layout from './components/Layout'; // Import the Layout component
 import VideoUpload from './components/VideoUpload';
 import PlayVideo from './components/PlayVideo';
 import { motion } from 'framer-motion'; // Import motion from framer-motion
+import { useEffect, useState } from 'react'; // Import useEffect and useState for typing effect
 
 function App() {
+  const [text, setText] = useState('');
+  const fullText = "Your go-to platform for streaming and sharing videos."; // Description text
+  const typingSpeed = 100; // Speed of typing in milliseconds
+
+  useEffect(() => {
+    let currentIndex = 0;
+    const typingInterval = setInterval(() => {
+      if (currentIndex <= fullText.length) {
+        setText(fullText.slice(0, currentIndex));
+        currentIndex++;
+      } else {
+        clearInterval(typingInterval);
+      }
+    }, typingSpeed);
+
+    return () => clearInterval(typingInterval);
+  }, [fullText]);
+
   return (
     <Router>
       <Routes>
@@ -29,6 +48,14 @@ function App() {
               >
                 Welcome to Streamify!
               </motion.div>
+
+              {/* Description with blinking cursor */}
+              <div className="flex justify-center mt-4">
+                <div className="text-xl text-white font-mono relative">
+                  {text}
+                  <span className="typing-cursor" /> {/* Blinking cursor */}
+                </div>
+              </div>
               
               {/* Additional Content */}
               <div className="text-center mt-10 overflow-visible"> {/* Ensure overflow is visible */}
