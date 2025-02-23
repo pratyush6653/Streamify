@@ -7,7 +7,7 @@ function Layout({ children }) {
       <Navbar />
 
       {/* Main Content */}
-      <main className="flex-grow pt-16"> {/* Add padding-top to account for the fixed navbar */}
+      <main className="flex-grow pt-16 md:pt-20"> {/* Adjust padding-top for mobile and desktop */}
         {children}
       </main>
 
