@@ -11,8 +11,8 @@ function App() {
     <>
       <div className="flex flex-col items-center justify-center min-h-screen">
         {/* Centered Heading */}
-        <h1 className="text-3xl font-extrabold text-gray-700 dark:text-gray-100 text-center mb-8">
-          Welcome to Streamify
+        <h1 className="text-5xl font-extrabold text-center mb-8 bg-gradient-to-r from-[#30cfd0] to-[#330867] bg-clip-text text-transparent animate-gradient">
+        Welcome To Streamify
         </h1>
         {/* Video Upload Component */}
         <VideoUpload />

@@ -92,11 +92,9 @@ function VideoUpload() {
       <div className="max-w-md w-full p-6 rounded-lg shadow-xl border border-gray-200 bg-white/10 backdrop-blur-sm">
         {/* Gradient Text for Heading */}
         <h2 className="text-2xl font-bold text-center bg-clip-text text-transparent bg-white">
-          Upload Your Video
+          Upload Your Video Here !
         </h2>
-        <p className="text-sm text-center text-white mb-6">
-          Please select a video file to upload. Supported formats: MP4, AVI, MOV, etc.
-        </p>
+        
 
         {/* Title Input */}
         <div className="mb-4">
@@ -108,7 +106,7 @@ function VideoUpload() {
             type="text"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white/10 border border-white/30 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="mt-1 block w-full px-3 py-2 bg-white/10 border border-white/30 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400"
             placeholder="Enter video title"
             required
           />
@@ -123,11 +121,10 @@ function VideoUpload() {
             id="description"
             value={description}
             onChange={(e) => setDescription(e.target.value)}
-            className="mt-1 block w-full px-3 py-2 bg-white/10 border border-white/30 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-purple-500"
+            className="mt-1 block w-full px-3 py-2 bg-white/10 border border-white/30 rounded-md text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-400 resize-none"
             placeholder="Enter video description"
-            rows="3"
-            required
-          />
+            rows="2" // Set a fixed number of rows
+/>
         </div>
 
         {/* File Input */}
@@ -167,11 +164,15 @@ function VideoUpload() {
               className="hidden"
             />
           </label>
-        </div>
 
+          
+        </div>
+        <p className="text-sm text-center text-white mb-6 pt-4">
+          Please select a video file to upload. Supported formats: MP4, AVI, MOV, etc.
+        </p>
         {/* Display Selected File Name with Remove Button */}
         {selectedFile && (
-          <div className="mt-4 p-3 bg-white/10 rounded-lg flex items-center justify-between backdrop-blur-sm">
+          <div className="mt-3 p-1 bg-white/10 rounded-lg flex items-center justify-between backdrop-blur-sm">
             <p className="text-sm text-white">
               {selectedFile.name}
             </p>
@@ -214,11 +215,13 @@ function VideoUpload() {
             onClick={handleUpload}
             disabled={uploading}
             className="w-full mt-6 px-4 py-2 bg-[#002244] text-white font-semibold rounded-lg 
-            hover:bg-[#003366] 
-            disabled:opacity-50 disabled:cursor-not-allowed"
-          >
-            Upload
-          </button>
+             border-2 border-white/30 hover:border-white/50 
+             shadow-[0_0_8px_2px_rgba(255,255,255,0.3)] hover:shadow-[0_0_12px_4px_rgba(255,255,255,0.5)]
+             transition-all duration-2000 
+             disabled:opacity-50 disabled:cursor-not-allowed"
+>
+  Upload
+</button>
         )}
 
         {/* Display Error Message */}
