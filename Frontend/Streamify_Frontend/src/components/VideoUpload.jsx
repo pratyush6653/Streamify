@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import axios from 'axios'; // Import axios
 import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
 import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
@@ -10,12 +10,16 @@ function VideoUpload() {
   const [uploading, setUploading] = useState(false); // State to track upload progress
   const [error, setError] = useState(null); // State to handle errors
   const [uploadProgress, setUploadProgress] = useState(0); // State to track upload progress percentage
-  const [uploadSuccess, setUploadSuccess] = useState(false); // State to track upload success
+  const fileInputRef = useRef(null); // Ref to reset the file input
 
   // Function to handle file selection
   const handleFileChange = (event) => {
     const file = event.target.files[0];
     if (file) {
+      if (file.size > 1000 * 1024 * 1024) { // 1000MB limit
+        toast.error('File size exceeds the limit of 1000MB.');
+        return;
+      }
       setSelectedFile(file); // Update state with the selected file
       console.log('Selected file:', file);
     }
@@ -26,6 +30,10 @@ function VideoUpload() {
     event.preventDefault(); // Prevent the browser from opening the file
     const file = event.dataTransfer.files[0]; // Get the dropped file
     if (file) {
+      if (file.size > 1000 * 1024 * 1024) { // 1000MB limit
+        toast.error('File size exceeds the limit of 1000MB.');
+        return;
+      }
       setSelectedFile(file); // Update state with the dropped file
       console.log('Dropped file:', file);
     }
@@ -43,7 +51,9 @@ function VideoUpload() {
     setDescription(''); // Clear the description input
     setError(null); // Clear any errors
     setUploadProgress(0); // Reset upload progress
-    setUploadSuccess(false); // Reset upload success
+    if (fileInputRef.current) {
+      fileInputRef.current.value = ''; // Reset the file input
+    }
   };
 
   // Function to remove the selected file
@@ -71,7 +81,6 @@ function VideoUpload() {
 
     setUploading(true); // Start uploading
     setError(null); // Reset error state
-    setUploadSuccess(false); // Reset upload success
 
     try {
       // Send the FormData to the backend using axios
@@ -88,9 +97,6 @@ function VideoUpload() {
 
       console.log('Upload successful:', response.data);
 
-      // Set upload success state
-      setUploadSuccess(true);
-
       // Show success toast
       toast.success('File uploaded successfully!');
 
@@ -100,7 +106,7 @@ function VideoUpload() {
       }, 3000); // Reset the form after 3 seconds
     } catch (error) {
       console.error('Error uploading file:', error);
-      // setError(error.response?.data?.message || 'Failed to upload file. Please try again.');
+      setError(error.response?.data?.message || 'Failed to upload file. Please try again.');
 
       // Show error toast
       toast.error(error.response?.data?.message || 'Failed to upload file. Please try again.');
@@ -110,11 +116,11 @@ function VideoUpload() {
   };
 
   return (
-    <div className="flex items-center justify-center bg-[#002244]">
+    <div className="flex items-center justify-center min-h-screen bg-[#002244] p-4">
       {/* Upload Card */}
       <div className="max-w-md w-full p-6 rounded-lg shadow-xl border border-gray-200 bg-white/10 backdrop-blur-sm">
         {/* Gradient Text for Heading */}
-        <h2 className="text-2xl font-bold text-center bg-clip-text text-transparent bg-white">
+        <h2 className="text-2xl font-bold text-center bg-clip-text text-transparent bg-gradient-to-r from-[#30cfd0] to-[#590aba]">
           Upload Your Video Here !
         </h2>
 
@@ -186,6 +192,7 @@ function VideoUpload() {
               accept="video/*"
               onChange={handleFileChange}
               className="hidden"
+              ref={fileInputRef} // Add ref to reset the file input
             />
           </label>
         </div>
@@ -230,8 +237,7 @@ function VideoUpload() {
               style={{ width: `${uploadProgress}%` }}
             ></div>
           </div>
-         ) 
-         : (
+        ) : (
           <button
             onClick={handleUpload}
             disabled={uploading}

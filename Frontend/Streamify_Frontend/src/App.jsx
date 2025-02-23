@@ -1,52 +1,53 @@
-import { useState, useEffect } from 'react';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import Layout from './components/Layout'; // Import the Layout component
 import VideoUpload from './components/VideoUpload';
-import PlayVideo from './components/PlayVideo'; // Fix the casing of the file name
+import PlayVideo from './components/PlayVideo';
+import { motion } from 'framer-motion'; // Import motion from framer-motion
 
 function App() {
-  const [count, setCount] = useState(0);
-  const [text, setText] = useState('');
-  const fullText = 'Welcome To Streamify';
-  const [videoId, setVideoId] = useState('32b0120e-bce9-4b64-958e-16cb87b37a68'); // State to store the video ID
-
-  useEffect(() => {
-    let currentIndex = 0;
-    const typingInterval = setInterval(() => {
-      if (currentIndex <= fullText.length) {
-        setText(fullText.slice(0, currentIndex));
-        currentIndex++;
-      } else {
-        clearInterval(typingInterval);
-      }
-    }, 100); // Adjust typing speed here
-
-    return () => clearInterval(typingInterval);
-  }, []);
-
-
   return (
-    <>
-      <div className="flex flex-col items-center justify-center min-h-screen">
-        {/* Centered Heading with Typing Effect */}
-        <h1 className="text-5xl font-extrabold text-center mb-8 bg-gradient-to-r from-[#30cfd0] to-[#330867] bg-clip-text text-transparent py-1">
-          {text}
-          <span className="typing-cursor">|</span> {/* Cursor Blink Effect */}
-        </h1>
-       
-        {/* <div>
-          <h1 className='text-white'>Playing Video</h1>
-          <video src={`http://localhost:9000/api/v1/videos/stream/${videoId}`} controls>
-           
-          </video>
-        </div> */}
-         {/* Video Upload Component */}
-        <VideoUpload />
+    <Router>
+      <Routes>
+        <Route
+          path="/"
+          element={
+            <Layout>
+              {/* Welcome text with multiple effects */}
+              <motion.div
+                className="text-center text-6xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#30cfd0] to-[#330867] mt-20"
+                initial={{ opacity: 0, scale: 0.5, y: -30 }}
+                animate={{
+                  opacity: 1,
+                  scale: 1.2,
+                  y: 0,
+                  transition: {
+                    opacity: { duration: 1, ease: 'easeOut' },
+                    scale: { duration: 1.5, ease: 'easeInOut' },
+                    y: { type: 'spring', stiffness: 200, damping: 20 },
+                  },
+                }}
+              >
+                Welcome to Streamify!
+              </motion.div>
+              
+              {/* Additional Content */}
+              <div className="text-center mt-10">
+                <motion.div
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  transition={{ delay: 1.7, duration: 3}}
+                >
+                  
+                </motion.div>
+              </div>
+            </Layout>
+          }
+        /> {/* Home Page */}
 
-        <PlayVideo/>
-      </div>
-    </>
+        <Route path="/play-video" element={<Layout><PlayVideo /></Layout>} /> {/* PlayVideo Page */}
+        <Route path="/upload" element={<Layout><VideoUpload /></Layout>} /> {/* Upload Page */}
+      </Routes>
+    </Router>
   );
 }
 
