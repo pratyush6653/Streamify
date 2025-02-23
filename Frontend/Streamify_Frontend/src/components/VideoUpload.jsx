@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import axios from 'axios'; // Import axios
+import { ToastContainer, toast } from 'react-toastify'; // Import Toastify
+import 'react-toastify/dist/ReactToastify.css'; // Import Toastify CSS
 
 function VideoUpload() {
   const [selectedFile, setSelectedFile] = useState(null); // State to store the selected file
@@ -52,12 +54,12 @@ function VideoUpload() {
   // Function to upload the file to the Spring Boot API
   const handleUpload = async () => {
     if (!selectedFile) {
-      alert('Please select a file to upload.');
+      toast.error('Please select a file to upload.'); // Show error toast
       return;
     }
 
     if (!title || !description) {
-      alert('Please provide a title and description for the video.');
+      toast.error('Please provide a title and description for the video.'); // Show error toast
       return;
     }
 
@@ -89,13 +91,19 @@ function VideoUpload() {
       // Set upload success state
       setUploadSuccess(true);
 
+      // Show success toast
+      toast.success('File uploaded successfully!');
+
       // Reset everything after successful upload
       setTimeout(() => {
         resetForm();
       }, 3000); // Reset the form after 3 seconds
     } catch (error) {
       console.error('Error uploading file:', error);
-      setError(error.response?.data?.message || 'Failed to upload file. Please try again.');
+      // setError(error.response?.data?.message || 'Failed to upload file. Please try again.');
+
+      // Show error toast
+      toast.error(error.response?.data?.message || 'Failed to upload file. Please try again.');
     } finally {
       setUploading(false); // Stop uploading
     }
@@ -222,11 +230,8 @@ function VideoUpload() {
               style={{ width: `${uploadProgress}%` }}
             ></div>
           </div>
-        ) : uploadSuccess ? (
-          <p className="mt-6 text-sm text-green-400 text-center">
-            File uploaded successfully!
-          </p>
-        ) : (
+         ) 
+         : (
           <button
             onClick={handleUpload}
             disabled={uploading}
@@ -247,6 +252,20 @@ function VideoUpload() {
           </p>
         )}
       </div>
+
+      {/* Toastify Container */}
+      <ToastContainer
+        position="top-right"
+        autoClose={4000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
     </div>
   );
 }

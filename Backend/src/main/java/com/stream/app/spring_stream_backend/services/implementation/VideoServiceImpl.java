@@ -94,9 +94,8 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public Video getById(String id) {
-        
-
-    throw new UnsupportedOperationException("Unimplemented method 'getById'");
+       Video video= videoRepository.findById(id).orElseThrow(()->new RuntimeException("Video not found"));
+        return video;
     }
 
     @Override
@@ -107,8 +106,8 @@ public class VideoServiceImpl implements VideoService {
 
     @Override
     public List<Video> allVideo() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'allVideo'");
+
+        return videoRepository.findAll();
     }
     
 }
