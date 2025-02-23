@@ -10,7 +10,7 @@ function App() {
   const [text2, setText2] = useState('');
   const [text3, setText3] = useState('');
 
-  const fullText1 = "Your go-to platform for streaming and sharing videos."; // First line
+  const fullText1 = " Your go-to platform for streaming and sharing videos."; // First line
   const fullText2 = "Discover, stream, and share your favorite videos."; // Second line
   const fullText3 = "Join a community of creators and viewers."; // Third line
 
@@ -74,7 +74,7 @@ function App() {
             <Layout>
               {/* Welcome text with multiple effects */}
               <motion.div
-                className="text-center text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#30cfd0] to-[#2d0360] mt-20 pb-4" // Reduced text size and added padding-bottom
+                className="text-center text-5xl font-extrabold text-transparent bg-clip-text bg-gradient-to-r from-[#30cfd0] to-[#330867] mt-20 pb-4" // Reduced text size and added padding-bottom
                 initial={{ opacity: 0, scale: 0.5, y: -30 }}
                 animate={{
                   opacity: 1,
