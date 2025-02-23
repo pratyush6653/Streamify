@@ -14,7 +14,7 @@ function App() {
   const fullText2 = "Discover, stream, and share your favorite videos."; // Second line
   const fullText3 = "Join a community of creators and viewers."; // Third line
 
-  const typingSpeed = 100; // Speed of typing in milliseconds
+  const typingSpeed = 70; // Speed of typing in milliseconds
 
   // Typing effect for the first line
   useEffect(() => {
