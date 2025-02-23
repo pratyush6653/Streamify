@@ -106,7 +106,7 @@ function VideoUpload() {
       }, 3000); // Reset the form after 3 seconds
     } catch (error) {
       console.error('Error uploading file:', error);
-      setError(error.response?.data?.message || 'Failed to upload file. Please try again.');
+      //setError(error.response?.data?.message || 'Failed to upload file. Please try again.');
 
       // Show error toast
       toast.error(error.response?.data?.message || 'Failed to upload file. Please try again.');
