@@ -73,6 +73,21 @@ function Navbar() {
           >
             Upload
           </Link>
+          {/* Add Sign In and Sign Up links if needed */}
+          <Link
+            to="/signin"
+            className="text-white hover:text-blue-500 block md:inline-block mt-2 md:mt-0 px-3 py-1 rounded-lg hover:bg-[#003366] transition-all duration-300"
+            onClick={() => handleLinkClick('/signin')}
+          >
+            Sign In
+          </Link>
+          <Link
+            to="/signup"
+            className="text-white hover:text-blue-500 block md:inline-block mt-2 md:mt-0 px-3 py-1 rounded-lg hover:bg-[#003366] transition-all duration-300"
+            onClick={() => handleLinkClick('/signup')}
+          >
+            Sign Up
+          </Link>
         </div>
       </div>
     </nav>

@@ -1,7 +1,9 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout'; // Import the Layout component
 import VideoUpload from './components/VideoUpload';
-import PlayVideo from './components/PlayVideoComponent'; // Correct the file name casing//
+import PlayVideo from './components/PlayVideoComponent'; // Correct the file name casing
+import Signin from './components/Signin'; // Import the Signin component
+import Signup from './components/Signup'; // Import the Signup component
 import { motion } from 'framer-motion'; // Import motion from framer-motion
 import { useEffect, useState } from 'react'; // Import useEffect and useState for typing effect
 
@@ -121,7 +123,21 @@ function App() {
                   animate={{ opacity: 1 }}
                   transition={{ delay: 1.7, duration: 3 }}
                 >
-                  {/* Additional Content */}
+                  {/* Navigation Links */}
+                  <div className="flex justify-center space-x-4">
+                    <a
+                      href="/signin"
+                      className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+                    >
+                      Sign In
+                    </a>
+                    <a
+                      href="/signup"
+                      className="px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                    >
+                      Sign Up
+                    </a>
+                  </div>
                 </motion.div>
               </div>
             </Layout>
@@ -130,6 +146,8 @@ function App() {
 
         <Route path="/play-video" element={<Layout><PlayVideo /></Layout>} /> {/* PlayVideo Page */}
         <Route path="/upload" element={<Layout><VideoUpload /></Layout>} /> {/* Upload Page */}
+        <Route path="/signin" element={<Signin />} /> {/* Sign In Page */}
+        <Route path="/signup" element={<Signup />} /> {/* Sign Up Page */}
       </Routes>
     </Router>
   );
