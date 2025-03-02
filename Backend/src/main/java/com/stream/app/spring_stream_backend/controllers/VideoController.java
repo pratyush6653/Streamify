@@ -55,7 +55,7 @@ public class VideoController {
     
         // Create a new Video object
         Video video = new Video();
-        video.setTitle(title);
+        video.setTitle(title.trim());
         video.setDescription(description);
         video.setVideoId(UUID.randomUUID().toString());
     
