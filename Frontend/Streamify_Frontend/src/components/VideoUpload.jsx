@@ -103,7 +103,7 @@ function VideoUpload() {
       // Reset everything after successful upload
       setTimeout(() => {
         resetForm();
-      }, 3000); // Reset the form after 3 seconds
+      }, 200); // Reset the form after 3 seconds
     } catch (error) {
       console.error('Error uploading file:', error);
       //setError(error.response?.data?.message || 'Failed to upload file. Please try again.');

@@ -18,7 +18,7 @@ function App() {
 
   // Typing effect for the first line
   useEffect(() => {
-    let currentIndex = 0;
+    let currentIndex = 1;
     const typingInterval = setInterval(() => {
       if (currentIndex <= fullText1.length) {
         setText1(fullText1.slice(0, currentIndex));

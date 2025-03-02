@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -97,12 +98,17 @@ public class VideoServiceImpl implements VideoService {
        Video video= videoRepository.findById(id).orElseThrow(()->new RuntimeException("Video not found"));
         return video;
     }
-
     @Override
     public Video getByTitle(String title) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getByTitle'");
+        String trimmedTitle = title.trim(); // Handle spaces
+        Optional<Video> videoOptional = videoRepository.findByTitle(trimmedTitle);
+        
+        // Return the video if found or null if not found
+        return videoOptional.orElse(null); 
     }
+
+    
+
 
     @Override
     public List<Video> allVideo() {

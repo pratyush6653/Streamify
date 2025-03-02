@@ -18,6 +18,7 @@ function VideoList() {
         const data = await response.json();
         console.log('Raw video data:', data); // Log the raw data
         
+        // Ensure data is an array
         setVideos(Array.isArray(data) ? data : []);
       } catch (error) {
         console.error('Error fetching videos:', error);
@@ -57,7 +58,11 @@ function VideoList() {
             console.warn('Video ID not found for video:', video);
             return null;
           }
-          
+
+          // Construct the streaming URL
+          const videoUrl = `http://localhost:9000/api/v1/videos/stream/id/${videoId}`;
+          console.log('Video URL:', videoUrl);
+
           return (
             <div key={videoId} className="bg-white/10 rounded-lg p-4 backdrop-blur-sm">
               <h2 className="text-xl font-semibold text-white mb-2">
@@ -70,9 +75,9 @@ function VideoList() {
                 <video
                   controls
                   className="w-full rounded-lg"
-                  src={`http://localhost:9000/api/v1/videos/stream/${videoId}`}
-                  onError={() => {
-                    console.error("Failed to load video");
+                  src={videoUrl}
+                  onError={(e) => {
+                    console.error("Failed to load video:", e);
                     setError("Error loading video. Please try again later.");
                   }}
                 >

@@ -85,55 +85,91 @@ public class VideoController {
                     .build());
         }
     }  
+    
     // for Streaming video by id 
- @GetMapping("/stream/{videoId}")
-public ResponseEntity<Resource> stream(@PathVariable String videoId) {
-    if (videoId == null || videoId.isEmpty())
-    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
-    System.out.println("videoId: " + videoId);
-    // Fetch video from the database
-    Video video = videoService.getById(videoId.trim());
-    
-    // Handle if video is not found
-    if (video == null) {
-        // Return 404 NOT FOUND with an empty response body
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    @GetMapping("/stream/id/{videoId}")
+    public ResponseEntity<Resource> stream(@PathVariable String videoId) {
+        if (videoId == null || videoId.isEmpty())
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        System.out.println("videoId: " + videoId);
+        // Fetch video from the database
+        Video video = videoService.getById(videoId.trim());
+        
+        // Handle if video is not found
+        if (video == null) {
+            // Return 404 NOT FOUND with an empty response body
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        String contentType = video.getContentType();
+        String filePath = video.getFilePath().replace("\\", "/");;
+        Resource resource = new FileSystemResource(filePath);
+        
+        // Log file path and content type for debugging
+        System.out.println("Streaming video from path: " + filePath);
+        System.out.println("Content Type: " + contentType);
+        
+        // Handle if the file does not exist
+        if (!resource.exists()) {
+            // Return 404 NOT FOUND with an empty response body
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        // Set default content type if null
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        // Return the video as a stream with proper content type
+        return ResponseEntity.ok()
+                             .contentType(MediaType.parseMediaType(contentType))
+                             .body(resource);
     }
 
-    String contentType = video.getContentType();
-    String filePath = video.getFilePath().replace("\\", "/");;
-    Resource resource = new FileSystemResource(filePath);
-    
-    // Log file path and content type for debugging
-    System.out.println("Streaming video from path: " + filePath);
-    System.out.println("Content Type: " + contentType);
-    
-    // Handle if the file does not exist
-    if (!resource.exists()) {
-        // Return 404 NOT FOUND with an empty response body
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+    // for Streaming video by title
+    @GetMapping("/stream/title/{titleId}")
+    public ResponseEntity<Resource> streamByTitle(@PathVariable String titleId) {
+        if (titleId == null || titleId.isEmpty()) {
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(null);
+        }
+
+        Video video = videoService.getByTitle(titleId.trim());
+
+        if (video == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        String contentType = video.getContentType();
+        String filePath = video.getFilePath().replace("\\", "/");
+        Resource resource = new FileSystemResource(filePath);
+
+        if (!resource.exists()) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+
+        if (contentType == null) {
+            contentType = "application/octet-stream";
+        }
+
+        return ResponseEntity.ok()
+                             .contentType(MediaType.parseMediaType(contentType))
+                             .body(resource);
     }
 
-    // Set default content type if null
-    if (contentType == null) {
-        contentType = "application/octet-stream";
+    // This method retrieves video details by title
+    @GetMapping("/video/{titleId}")
+    public ResponseEntity<Video> getVideoByTitle(@PathVariable String titleId) {
+        Video video = videoService.getByTitle(titleId);
+        if (video == null) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+        }
+        return ResponseEntity.ok(video);
     }
 
-    // Return the video as a stream with proper content type
-    return ResponseEntity.ok()
-                         .contentType(MediaType.parseMediaType(contentType))
-                         .body(resource);
-}
-
-    
-
-//for getting all video 
-
-@GetMapping
-public ResponseEntity<List<Video>> getAllVideo()
-{
-    List<Video> videos=videoService.allVideo();
-    return ResponseEntity.ok(videos);
-}
-
+    // for getting all videos
+    @GetMapping
+    public ResponseEntity<List<Video>> getAllVideo() {
+        List<Video> videos = videoService.allVideo();
+        return ResponseEntity.ok(videos);
+    }
 }
