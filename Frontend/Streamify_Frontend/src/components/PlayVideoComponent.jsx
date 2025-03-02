@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 function VideoList() {
   const [videos, setVideos] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const videoRefs = useRef({}); 
+  const currentlyPlaying = useRef(null); 
 
   useEffect(() => {
     const fetchVideos = async () => {
@@ -30,6 +32,19 @@ function VideoList() {
 
     fetchVideos();
   }, []);
+
+  // Function to handle video play
+  const handlePlay = (videoId) => {
+    if (currentlyPlaying.current && currentlyPlaying.current !== videoId) {
+      // Pause the previously playing video
+      const previousVideo = videoRefs.current[currentlyPlaying.current];
+      if (previousVideo) {
+        previousVideo.pause();
+      }
+    }
+    // Update the currently playing video
+    currentlyPlaying.current = videoId;
+  };
 
   if (loading) {
     return <div className="text-center text-white p-4">Loading videos...</div>;
@@ -73,9 +88,11 @@ function VideoList() {
               </p>
               <div className="relative">
                 <video
+                  ref={(el) => (videoRefs.current[videoId] = el)} // Store reference to the video element
                   controls
                   className="w-full rounded-lg"
                   src={videoUrl}
+                  onPlay={() => handlePlay(videoId)} // Handle play event
                   onError={(e) => {
                     console.error("Failed to load video:", e);
                     setError("Error loading video. Please try again later.");

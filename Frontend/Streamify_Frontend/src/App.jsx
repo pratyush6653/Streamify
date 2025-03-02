@@ -1,7 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Layout from './components/Layout'; // Import the Layout component
 import VideoUpload from './components/VideoUpload';
-import PlayVideo from './components/PlayVideo';
+import PlayVideo from './components/PlayVideoComponent'; // Correct the file name casing//
 import { motion } from 'framer-motion'; // Import motion from framer-motion
 import { useEffect, useState } from 'react'; // Import useEffect and useState for typing effect
 

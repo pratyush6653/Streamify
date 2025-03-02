@@ -13,5 +13,5 @@ import lombok.Setter;
 @Builder
 public class CustomMessage {
     private String message;
-    private boolean success=false;;
+    private boolean success=false;
 }
